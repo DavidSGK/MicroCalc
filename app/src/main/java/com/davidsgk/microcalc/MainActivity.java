@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button[] numButtons = new Button[10];        //0,1,2,3,4,5,6,7,8,9
     private static Button[] operatorButtons = new Button[7];    //+,-,*,/,(,),^
     private static Button decimalButton;                        //.
+    private static Button negativeButton;                       //(-)
     private static Button returnButton;                         //=
     private static Button deleteButton;                         //backspace/clear for long press
     private static TextView output;                             //outputs all input and answer
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         operatorButtons[6] = (Button) findViewById(R.id.button_bracketR);
 
         decimalButton = (Button) findViewById(R.id.button_decimal);
+        negativeButton = (Button) findViewById(R.id.button_negative);
         returnButton = (Button) findViewById(R.id.button_return);
         deleteButton = (Button) findViewById(R.id.button_del);
 
@@ -83,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         output.setText(output.getText().toString() + ".");
+                    }
+                }
+        );
+
+        negativeButton.setOnClickListener(
+                new Button.OnClickListener() {
+                    public void onClick(View v) {
+                        output.setText(output.getText().toString() + "-");
                     }
                 }
         );
@@ -235,7 +245,10 @@ public class MainActivity extends AppCompatActivity {
             nonNumCount = 0;
             for (int i = 0; i < newLine.length(); i++) {
                 if (!isNumeric(newLine.charAt(i)) && newLine.charAt(i) != '.' && newLine.charAt(i) != ' ' && newLine.charAt(i) != ' ') {
-                    nonNumCount++;
+                    //Doesn't add one for negative sign
+                    if(!(newLine.charAt(i) == '-' && !(newLine.charAt(i+1) == ' '))) {
+                        nonNumCount++;
+                    }
                 }
             }
             //Checks if any numbers are side by side; can result from brackets' positioning
@@ -265,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 bracketCount--;
             } else {                //if brackets don't exist
+                System.out.println("nonNumCount: " + nonNumCount);
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 tempResult = Calculate(checkList);
                 newLine.delete(0, newLine.length());
