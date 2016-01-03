@@ -198,10 +198,13 @@ public class MainActivity extends AppCompatActivity {
         //Can't have two numbers or non-numbers side by side
         for(int i = 1; i < splitArray.length; i++){
             if((isNumeric(splitArray[i]) && isNumeric(splitArray[i-1])) || (!isNumeric(splitArray[i]) && !isNumeric(splitArray[i-1]))){
-                //Unless it's a ) directly followed by (
-                if(!(splitArray[i].equals("(") && splitArray[i-1].equals(")"))) {
-                    System.out.println(3);
-                    return "Syntax Error";
+                //Unless it's an operator followed by ( or a ) followed by an operator
+                if(!(splitArray[i].equals("(") && isOperator(splitArray[i-1].charAt(0))) && !(isOperator(splitArray[i].charAt(0)) && splitArray[i-1].equals(")"))) {
+                    //Unless it's a ) directly followed by (
+                    if (!(splitArray[i].equals("(") && splitArray[i - 1].equals(")"))) {
+                        System.out.println(3);
+                        return "Syntax Error";
+                    }
                 }
             }
         }
@@ -239,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     newLine.insert(startBracketIndex, tempResult);
                 }
+                bracketCount--;
             } else {                //if brackets don't exist
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 tempResult = Calculate(checkList);
@@ -249,6 +253,9 @@ public class MainActivity extends AppCompatActivity {
                     newLine.insert(0, tempResult);
                 }
             }
+
+            //clean up leading and trailing spaces left over
+            newLine = new StringBuilder(newLine.toString().replace("  ", " "));
         }
 
         return newLine.toString().replace(' ', '\0');
@@ -355,5 +362,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public boolean isOperator(char text) {
+        if(text == '+' || text == 'x' || text == '-' || text == '/' || text == '^') return true;
+        else return false;
     }
 }
