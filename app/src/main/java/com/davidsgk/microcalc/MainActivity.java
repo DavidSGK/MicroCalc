@@ -244,13 +244,14 @@ public class MainActivity extends AppCompatActivity {
             //Checks how many operators need to be resolved
             nonNumCount = 0;
             for (int i = 0; i < newLine.length(); i++) {
-                if (!isNumeric(newLine.charAt(i)) && newLine.charAt(i) != '.' && newLine.charAt(i) != ' ' && newLine.charAt(i) != ' ') {
+                if (!isNumeric(newLine.charAt(i)) && newLine.charAt(i) != '.' && newLine.charAt(i) != ' ' && newLine.charAt(i) != ' ' && newLine.charAt(i) != 'E') {
                     //Doesn't add one for negative sign
                     if(!(newLine.charAt(i) == '-' && !(newLine.charAt(i+1) == ' '))) {
                         nonNumCount++;
                     }
                 }
             }
+
             //Checks if any numbers are side by side; can result from brackets' positioning
             testArray = newLine.toString().split("\\s+");
             condition = false;
@@ -260,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            //If there are no more calculations to be done, break loop
             if (nonNumCount == 0 && condition == false) break;
 
             if (bracketCount != 0) { //if brackets exist
@@ -282,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 tempResult = Calculate(checkList);
                 newLine.delete(0, newLine.length());
-                if (tempResult == Math.rint(tempResult)) {
+                if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
                     newLine.insert(0, (int) tempResult);
                 } else {
                     newLine.insert(0, tempResult);
