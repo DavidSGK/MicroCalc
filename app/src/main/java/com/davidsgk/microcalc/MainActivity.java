@@ -140,11 +140,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
             currentLine = text.substring(0, text.length() - 2);
         }
+
         return currentLine;
     }
 
     //method to perform the calculations based on input
     protected String Interpreter(String line) {
+        
+        if(line.equals(" ")) return "No Input";
+
         String[] splitArray;
         if(line.charAt(0) == ' '){
             splitArray = line.substring(1, line.length() - 1).split("\\s+");
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.print(piece);
         }
         System.out.print("\n");
+
         //Check for syntax errors
         int count1 = 0;
         int count2 = 0;
