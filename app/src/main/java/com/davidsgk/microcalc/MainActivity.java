@@ -96,8 +96,12 @@ public class MainActivity extends AppCompatActivity {
                 new Button.OnClickListener(){
                     public void onClick(View v){
                         String text = output.getText().toString();
-                        if(text.length() != 0 && text.charAt(text.length() - 1) != '\n'){
-                            output.setText(output.getText().subSequence(0, output.getText().length() - 1));
+                        if(text.length() != 0 && text.charAt(text.length() - 1) != '\n'){   //can't delete past lines
+                            if(text.charAt(text.length() - 1) == ' ') { //deleting an operator
+                                output.setText(output.getText().subSequence(0, output.getText().length() - 3));
+                            } else {
+                                output.setText(output.getText().subSequence(0, output.getText().length() - 1));
+                            }
                         }
                     }
                 }
@@ -206,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder newLine = new StringBuilder(line);
 
         int nonNumCount;
+        int startBracketIndex;
+        int endBracketIndex;
+        double tempResult;
 
         while(true) {
             System.out.println("newLine: " + newLine);
@@ -218,15 +225,30 @@ public class MainActivity extends AppCompatActivity {
 
             if(nonNumCount == 0) break;
 
-            System.out.println("nonNumCount: " + nonNumCount);
+            if(bracketCount != 0) { //if brackets exist
+                System.out.println("nonNumCount: " + nonNumCount);
 
-            int startBracketIndex = newLine.lastIndexOf("(", newLine.indexOf(")"));
-            int endBracketIndex = newLine.indexOf(")");
+                startBracketIndex = newLine.lastIndexOf("(", newLine.indexOf(")"));
+                endBracketIndex = newLine.indexOf(")");
 
-            ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
-            System.out.println("substring: " + newLine.substring(startBracketIndex, endBracketIndex + 1));
-            newLine.delete(startBracketIndex, endBracketIndex + 1);
-            newLine.insert(startBracketIndex, Calculate(checkList));
+                ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
+                tempResult = Calculate(checkList);
+                newLine.delete(startBracketIndex, endBracketIndex + 1);
+                if(tempResult == Math.rint(tempResult)) {
+                    newLine.insert(startBracketIndex, (int) tempResult);
+                } else {
+                    newLine.insert(startBracketIndex, tempResult);
+                }
+            } else {                //if brackets don't exist
+                ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
+                tempResult = Calculate(checkList);
+                newLine.delete(0, newLine.length());
+                if(tempResult == Math.rint(tempResult)) {
+                    newLine.insert(0, (int) tempResult);
+                } else {
+                    newLine.insert(0, tempResult);
+                }
+            }
         }
 
         return newLine.toString().replace(' ', '\0');
