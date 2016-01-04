@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
                 tempResult = Calculate(checkList);
                 newLine.delete(startBracketIndex, endBracketIndex + 1);
-                if (tempResult == Math.rint(tempResult)) {
+                if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
                     newLine.insert(startBracketIndex, (int) tempResult);
                 } else {
                     newLine.insert(startBracketIndex, tempResult);
