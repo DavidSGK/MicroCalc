@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.method.ScrollingMovementMethod;
-import android.view.ViewPropertyAnimator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
@@ -317,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("nonNumCount: " + nonNumCount);
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 tempResult = Calculate(checkList);
+                System.out.println("tempResult: " + tempResult);
                 newLine.delete(0, newLine.length());
                 if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
                     newLine.insert(0, (int) tempResult);
@@ -330,6 +330,11 @@ public class MainActivity extends AppCompatActivity {
             if (newLine.charAt(0) == ' ') newLine.deleteCharAt(0);
         }
 
+        if(newLine.toString().contains("E") &&
+                newLine.toString().charAt(newLine.indexOf("E") + 1) != '-' &&
+                Integer.parseInt(newLine.toString().substring(newLine.indexOf("E") + 1, newLine.length())) <= 15){
+            return String.format("%.0f", Double.parseDouble(newLine.toString().replace(' ', '\0')));
+        }
         return newLine.toString().replace(' ', '\0');
     }
 
@@ -435,6 +440,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        System.out.println(Double.parseDouble(arrayList.get(0)));
         return Double.parseDouble(arrayList.get(0));
     }
 
