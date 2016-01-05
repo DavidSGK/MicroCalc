@@ -16,17 +16,17 @@
         android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/output"
-        android:layout_weight="4"
+        android:layout_weight="4.5"
         android:textColor="#FFFFFF"
         android:gravity="bottom|end"
-        android:maxLines="4"
+        android:maxLines="6"
         android:scrollbars="vertical"
         android:textSize="30dp" />
 
     <Space
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="0.5" />
 
     <LinearLayout
         android:orientation="horizontal"

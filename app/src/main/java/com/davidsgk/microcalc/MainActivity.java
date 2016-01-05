@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ListIterator;
@@ -229,8 +231,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //Remove unnecessary leading 0's from input
+        for(int i = 0; i < splitArray.length; i++){
+            if(splitArray[i].length() > 1 && splitArray[i].charAt(0) == '0' && !(splitArray[i].charAt(1) == '.')){
+                System.out.println("leading 0's detected");
+                StringBuilder tempString = new StringBuilder(splitArray[i]);
+                if(splitArray[i].contains(".")){
+                    if(splitArray[i].charAt(splitArray[i].indexOf('.') - 1) == '0'){
+                        for(int j = 0; j < splitArray[i].indexOf('.') - 1; j++){
+                            tempString.deleteCharAt(0);
+                        }
+                    } else {
+                        for(int j = 0; j < splitArray[i].indexOf('.'); j++){
+                            tempString.deleteCharAt(0);
+                        }
+                    }
+                } else {
+                    while(tempString.charAt(0) == '0'){
+                        tempString.deleteCharAt(0);
+                    }
+                }
+                System.out.println("tempString: " + tempString);
+                splitArray[i] = tempString.toString();
+            }
+        }
+
+        //Generate new string with fixes made
+        String fixedLine = "";
+        for(String piece : splitArray){
+            fixedLine += piece + " ";
+        }
+
         //Interpretation & calculation
-        StringBuilder newLine = new StringBuilder(line);
+        StringBuilder newLine = new StringBuilder(fixedLine);
 
         int nonNumCount;
         String[] testArray;
@@ -391,6 +424,16 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("Size: " + arrayList.size());
         System.out.println(arrayList.get(0));
+
+        //Circumvent issue of double precision loss by shortening output
+        if(arrayList.get(0).contains(".")){
+            if(arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13){
+                DecimalFormat decimalFormat = new DecimalFormat("#.#############");
+                decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+                return Double.parseDouble(decimalFormat.format(Double.parseDouble(arrayList.get(0))));
+            }
+        }
+
         return Double.parseDouble(arrayList.get(0));
     }
 
