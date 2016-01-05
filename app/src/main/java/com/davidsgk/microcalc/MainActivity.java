@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Can't have the first ) before ( and can't have the last ( after )
         if (Arrays.asList(splitArray).indexOf(")") < Arrays.asList(splitArray).indexOf("(") || Arrays.asList(splitArray).lastIndexOf("(") > Arrays.asList(splitArray).lastIndexOf(")")) {
+            System.out.println(4);
             return "Syntax Error";
         }
 
@@ -222,8 +223,10 @@ public class MainActivity extends AppCompatActivity {
             if ((isNumeric(splitArray[i]) && isNumeric(splitArray[i - 1])) || (!isNumeric(splitArray[i]) && !isNumeric(splitArray[i - 1]))) {
                 //Unless it's an operator followed by ( or a ) followed by an operator
                 if (!(splitArray[i].equals("(") && isOperator(splitArray[i - 1].charAt(0))) && !(isOperator(splitArray[i].charAt(0)) && splitArray[i - 1].equals(")"))) {
-                    //Unless it's a ) directly followed by (
-                    if (!(splitArray[i].equals("(") && splitArray[i - 1].equals(")"))) {
+                    //Unless it's brackets directly next to each other
+                    if (!(splitArray[i].equals("(") && splitArray[i - 1].equals(")")) &&
+                            !(splitArray[i].equals("(") && splitArray[i - 1].equals("(")) &&
+                            !(splitArray[i].equals(")") && splitArray[i - 1].equals(")"))) {
                         System.out.println(3);
                         return "Syntax Error";
                     }
@@ -346,25 +349,26 @@ public class MainActivity extends AppCompatActivity {
             ListIterator iterator;
 
             //Exponent
-            iterator = arrayList.listIterator();
+            iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
-                if (iterator.next().equals("^")) {
+                if (arrayList.get(iterator.nextIndex()).equals("^")) {
                     iterator.previous();
                     tempNum = Math.pow(Double.parseDouble(iterator.previous().toString()), Double.parseDouble(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
-                    iterator.next();
+                    iterator.next();    //unless next() is called, ListIterator cannot remove another element
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
+                    iterator = arrayList.listIterator();    //reset
                 }
+                if(iterator.hasNext()) iterator.next();
             }
 
-            //Multiplication
-            iterator = arrayList.listIterator();
+            //Multiplication & Division
+            iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
-                if (iterator.next().equals("x")) {
-                    iterator.previous();
+                if (arrayList.get(iterator.nextIndex()).equals("x")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) * Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -372,21 +376,18 @@ public class MainActivity extends AppCompatActivity {
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
-                } else if (iterator.nextIndex() < arrayList.size() && isNumeric(arrayList.get(iterator.previousIndex())) && isNumeric(arrayList.get(iterator.nextIndex()))) {
+                    iterator = arrayList.listIterator();    //reset
+                //For when numbers are left next to each other e.g. (2)(2) = 2 x 2 = 4
+                } else if (iterator.hasNext() && iterator.hasPrevious() && isNumeric(arrayList.get(iterator.previousIndex())) && isNumeric(arrayList.get(iterator.nextIndex()))) {
                     tempNum = Double.parseDouble(arrayList.get(iterator.previousIndex())) * Double.parseDouble(arrayList.get(iterator.nextIndex()));
                     iterator.previous();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
+                    iterator = arrayList.listIterator();    //reset
                 }
-            }
-
-            //Division
-            iterator = arrayList.listIterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().equals("/")) {
-                    iterator.previous();
+                else if (arrayList.get(iterator.nextIndex()).equals("/")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) / Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -394,14 +395,15 @@ public class MainActivity extends AppCompatActivity {
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
+                    iterator = arrayList.listIterator();    //reset
                 }
+                if(iterator.hasNext()) iterator.next();
             }
 
-            //Addition
+            //Addition & Subtraction
             iterator = arrayList.listIterator();
             while (iterator.hasNext()) {
-                if (iterator.next().equals("+")) {
-                    iterator.previous();
+                if (arrayList.get(iterator.nextIndex()).equals("+")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) + Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -409,14 +411,9 @@ public class MainActivity extends AppCompatActivity {
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
+                    iterator = arrayList.listIterator();    //reset
                 }
-            }
-
-            //Subtraction
-            iterator = arrayList.listIterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().equals("-")) {
-                    iterator.previous();
+                else if (arrayList.get(iterator.nextIndex()).equals("-")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) - Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -424,14 +421,16 @@ public class MainActivity extends AppCompatActivity {
                     iterator.next();
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
+                    iterator = arrayList.listIterator();    //reset
                 }
+                if(iterator.hasNext()) iterator.next();
             }
         }
 
         System.out.println("Size: " + arrayList.size());
         System.out.println(arrayList.get(0));
 
-        //Circumvent issue of double precision loss by shortening output
+        //Circumvent issue of double precision loss by shortening decimal output
         if(arrayList.get(0).contains(".")){
             if(arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13){
                 DecimalFormat decimalFormat = new DecimalFormat("#.#############");
