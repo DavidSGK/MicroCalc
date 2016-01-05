@@ -352,7 +352,6 @@ public class MainActivity extends AppCompatActivity {
             iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
                 if (arrayList.get(iterator.nextIndex()).equals("^")) {
-                    iterator.previous();
                     tempNum = Math.pow(Double.parseDouble(iterator.previous().toString()), Double.parseDouble(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
                     iterator.next();    //unless next() is called, ListIterator cannot remove another element
