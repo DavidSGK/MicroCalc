@@ -16,7 +16,7 @@
         android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/output"
-        android:layout_weight="4.5"
+        android:layout_weight="4.75"
         android:textColor="#FFFFFF"
         android:gravity="bottom|end"
         android:maxLines="6"
@@ -26,7 +26,7 @@
     <Space
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.25" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -55,9 +55,9 @@
                     android:text="7"
                     android:id="@+id/button_7"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number"/>
 
                 <Button
                     android:layout_width="0dp"
@@ -65,9 +65,9 @@
                     android:text="8"
                     android:id="@+id/button_8"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -75,9 +75,9 @@
                     android:text="9"
                     android:id="@+id/button_9"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
             </LinearLayout>
 
@@ -94,9 +94,9 @@
                     android:text="4"
                     android:id="@+id/button_4"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -104,9 +104,9 @@
                     android:text="5"
                     android:id="@+id/button_5"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -114,9 +114,9 @@
                     android:text="6"
                     android:id="@+id/button_6"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
             </LinearLayout>
 
@@ -133,9 +133,9 @@
                     android:text="1"
                     android:id="@+id/button_1"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -143,9 +143,9 @@
                     android:text="2"
                     android:id="@+id/button_2"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -153,9 +153,9 @@
                     android:text="3"
                     android:id="@+id/button_3"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
             </LinearLayout>
 
@@ -172,7 +172,7 @@
                     android:text="."
                     android:id="@+id/button_decimal"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#26a69a"
+                    android:background="@drawable/ripple_special"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -182,9 +182,9 @@
                     android:text="0"
                     android:id="@+id/button_0"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#333333"
                     android:textColor="#FFFFFF"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:background="@drawable/ripple_number" />
 
                 <Button
                     android:layout_width="0dp"
@@ -192,7 +192,7 @@
                     android:text="(-)"
                     android:id="@+id/button_negative"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#26a69a"
+                    android:background="@drawable/ripple_special"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -218,7 +218,7 @@
                     android:text="+"
                     android:id="@+id/button_add"
                     android:layout_weight="0.5"
-                    android:background="#00ab7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -228,7 +228,7 @@
                     android:text="DEL"
                     android:id="@+id/button_del"
                     android:layout_weight="0.5"
-                    android:background="#b71c1c"
+                    android:background="@drawable/ripple_del"
                     android:textColor="#FFFFFF"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -245,7 +245,7 @@
                     android:text="x"
                     android:id="@+id/button_multiply"
                     android:layout_weight="0.5"
-                    android:background="#00ab7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:capitalize="none"
                     android:textSize="20dp" />
@@ -256,7 +256,7 @@
                     android:text="("
                     android:id="@+id/button_bracketL"
                     android:layout_weight="0.5"
-                    android:background="#00aa7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -273,7 +273,7 @@
                     android:text="-"
                     android:id="@+id/button_subtract"
                     android:layout_weight="0.5"
-                    android:background="#00ab7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -283,7 +283,7 @@
                     android:text=")"
                     android:id="@+id/button_bracketR"
                     android:layout_weight="0.5"
-                    android:background="#00aa7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -300,7 +300,7 @@
                     android:text="/"
                     android:id="@+id/button_divide"
                     android:layout_weight="0.5"
-                    android:background="#00ab7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
 
@@ -310,7 +310,7 @@
                     android:text="^"
                     android:id="@+id/button_exponent"
                     android:layout_weight="0.5"
-                    android:background="#00aa7b"
+                    android:background="@drawable/ripple_operator"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
             </LinearLayout>
@@ -327,7 +327,7 @@
                     android:text="="
                     android:id="@+id/button_return"
                     android:layout_weight="0.333333333333333333"
-                    android:background="#00695c"
+                    android:background="@drawable/ripple_equal"
                     android:textColor="#FFFFFF"
                     android:textSize="20dp" />
             </LinearLayout>

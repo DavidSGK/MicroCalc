@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.text.method.ScrollingMovementMethod;
+import android.view.ViewPropertyAnimator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;

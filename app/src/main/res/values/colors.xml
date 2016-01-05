@@ -3,4 +3,10 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#222222</color>
     <color name="colorAccent">#ff6f00</color>
+    <color name="colorNumberHighLight">#555555</color>
+    <color name="colorOperatorHighLight">#00ab7b</color>
+    <color name="colorSpecialHighLight">#26a69a</color>
+    <color name="colorDelHighLight">#b71c1c</color>
+    <color name="colorEqualHighLight">#00695c</color>
+    <color name="colorRippleAccent">#444444</color>
 </resources>
