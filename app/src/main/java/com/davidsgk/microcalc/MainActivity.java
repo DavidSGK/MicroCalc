@@ -1,9 +1,14 @@
 package com.davidsgk.microcalc;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button returnButton;                         //=
     private static Button deleteButton;                         //backspace/clear for long press
     private static TextView output;                             //outputs all input and answer
+    private static Spannable span;                              //used for syling portions of output
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         output = (TextView) findViewById(R.id.output);
         output.setMovementMethod(new ScrollingMovementMethod());
+        output.setVerticalScrollBarEnabled(false);
 
         initButtons();
     }
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             numButtons[j].setOnClickListener(
                     new Button.OnClickListener() {
                         public void onClick(View v) {
-                            output.setText(output.getText().toString() + ((Button) v).getText().toString());
+                            output.append(((Button) v).getText().toString());
                             ScrollToBottom();
                         }
                     }
@@ -74,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             //detects if another operator was pressed right before
                             if (output.getText().length() != 0 && output.getText().charAt(output.getText().length() - 1) == ' ') {
-                                output.setText(output.getText().toString() + ((Button) v).getText().toString() + " ");
+                                output.append(((Button) v).getText().toString() + " ");
                             } else {
-                                output.setText(output.getText().toString() + " " + ((Button) v).getText().toString() + " ");
+                                output.append(" " + ((Button) v).getText().toString() + " ");
                             }
                         }
                     }
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         decimalButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        output.setText(output.getText().toString() + ".");
+                        output.append(".");
                     }
                 }
         );
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         negativeButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        output.setText(output.getText().toString() + "-");
+                        output.append("-");
                     }
                 }
         );
@@ -102,8 +109,19 @@ public class MainActivity extends AppCompatActivity {
         returnButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
-                        output.setText(output.getText().toString() + " =\n");
-                        output.setText(output.getText().toString() + Interpreter(CurrentLine()) + "\n");
+                        output.append("=\n");
+                        //taking the span of the previous lines and styling size and color for better readability
+                        span = new SpannableString(output.getText());
+                        span.setSpan(new RelativeSizeSpan(0.5f),
+                                output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
+                                output.getText().toString().lastIndexOf('\n'),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        span.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorOperatorHighLight)),
+                                output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
+                                output.getText().toString().lastIndexOf('\n'),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        output.setText(span);
+                        output.append(Interpreter(CurrentLine()) + "\n");
                         ScrollToBottom();
                     }
                 }
