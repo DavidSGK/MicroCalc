@@ -1,18 +1,18 @@
 package com.davidsgk.microcalc;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button returnButton;                         //=
     private static Button deleteButton;                         //backspace/clear for long press
     private static TextView output;                             //outputs all input and answer
-    private static Spannable span;                              //used for syling portions of output
+    private static Spannable span;                              //used for styling portions of output
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +79,17 @@ public class MainActivity extends AppCompatActivity {
             operatorButtons[k].setOnClickListener(
                     new Button.OnClickListener() {
                         public void onClick(View v) {
+                            String text = output.getText().toString();
                             //if line is empty and there is a previous result available, fetch the result
-                            if (output.getText().length() != 0 && output.getText().toString().charAt(output.getText().length() - 1) == '\n') {
-                                output.append(output.getText().toString().substring(output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
-                                        output.getText().toString().lastIndexOf('\n')));
+                            if (text.length() != 0 &&
+                                    text.charAt(text.length() - 1) == '\n' &&
+                                    isNumeric(text.substring(text.lastIndexOf('\n', text.length() - 2) + 1,
+                                            text.lastIndexOf('\n')))) {
+                                output.append(text.substring(text.lastIndexOf('\n', text.length() - 2) + 1,
+                                        text.lastIndexOf('\n')));
                             }
                             //detects if another operator was pressed right before
-                            if (output.getText().length() != 0 && output.getText().charAt(output.getText().length() - 1) == ' ') {
+                            if (text.length() != 0 && text.charAt(text.length() - 1) == ' ') {
                                 output.append(((Button) v).getText().toString() + " ");
                             } else {
                                 output.append(" " + ((Button) v).getText().toString() + " ");
@@ -142,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 output.setText(output.getText().subSequence(0, output.getText().length() - 1));
                             }
+                        } else if (text.length() != 0 && text.charAt(text.length() - 1) == '\n') {
+                            output.setText("");
                         }
                     }
                 }
@@ -152,6 +158,27 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onLongClick(View v) {
                         output.setText("");
                         return true;
+                    }
+                }
+        );
+
+        output.addTextChangedListener(
+                new TextWatcher() {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    public void afterTextChanged(Editable s) {
+                        String text = output.getText().toString();
+                        if (text.length() != 0 && text.charAt(text.length() - 1) == '\n') {
+                            deleteButton.setText("CLR");
+                        } else {
+                            deleteButton.setText("DEL");
+                        }
                     }
                 }
         );
@@ -330,6 +357,10 @@ public class MainActivity extends AppCompatActivity {
                 endBracketIndex = newLine.indexOf(")");
 
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
+                //Division by 0
+                if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
+                    return "Can't divide by 0";
+                }
                 tempResult = Calculate(checkList);
                 newLine.delete(startBracketIndex, endBracketIndex + 1);
                 if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
@@ -341,6 +372,11 @@ public class MainActivity extends AppCompatActivity {
             } else {                //if brackets don't exist
                 System.out.println("nonNumCount: " + nonNumCount);
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
+                //Division by 0
+                if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
+                    System.out.println("Division by 0");
+                    return "Can't divide by 0";
+                }
                 tempResult = Calculate(checkList);
                 System.out.println("tempResult: " + tempResult);
                 newLine.delete(0, newLine.length());
