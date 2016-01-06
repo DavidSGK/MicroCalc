@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
             operatorButtons[k].setOnClickListener(
                     new Button.OnClickListener() {
                         public void onClick(View v) {
+                            //if line is empty and there is a previous result available, fetch the result
+                            if (output.getText().length() != 0 && output.getText().toString().charAt(output.getText().length() - 1) == '\n') {
+                                output.append(output.getText().toString().substring(output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
+                                        output.getText().toString().lastIndexOf('\n')));
+                            }
                             //detects if another operator was pressed right before
                             if (output.getText().length() != 0 && output.getText().charAt(output.getText().length() - 1) == ' ') {
                                 output.append(((Button) v).getText().toString() + " ");
@@ -253,22 +258,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Remove unnecessary leading 0's from input
-        for(int i = 0; i < splitArray.length; i++){
-            if(splitArray[i].length() > 1 && splitArray[i].charAt(0) == '0' && !(splitArray[i].charAt(1) == '.')){
+        for (int i = 0; i < splitArray.length; i++) {
+            if (splitArray[i].length() > 1 && splitArray[i].charAt(0) == '0' && !(splitArray[i].charAt(1) == '.')) {
                 System.out.println("leading 0's detected");
                 StringBuilder tempString = new StringBuilder(splitArray[i]);
-                if(splitArray[i].contains(".")){
-                    if(splitArray[i].charAt(splitArray[i].indexOf('.') - 1) == '0'){
-                        for(int j = 0; j < splitArray[i].indexOf('.') - 1; j++){
+                if (splitArray[i].contains(".")) {
+                    if (splitArray[i].charAt(splitArray[i].indexOf('.') - 1) == '0') {
+                        for (int j = 0; j < splitArray[i].indexOf('.') - 1; j++) {
                             tempString.deleteCharAt(0);
                         }
                     } else {
-                        for(int j = 0; j < splitArray[i].indexOf('.'); j++){
+                        for (int j = 0; j < splitArray[i].indexOf('.'); j++) {
                             tempString.deleteCharAt(0);
                         }
                     }
                 } else {
-                    while(tempString.charAt(0) == '0'){
+                    while (tempString.charAt(0) == '0') {
                         tempString.deleteCharAt(0);
                     }
                 }
@@ -279,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Generate new string with fixes made
         String fixedLine = "";
-        for(String piece : splitArray){
+        for (String piece : splitArray) {
             fixedLine += piece + " ";
         }
 
@@ -300,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < newLine.length(); i++) {
                 if (!isNumeric(newLine.charAt(i)) && newLine.charAt(i) != '.' && newLine.charAt(i) != ' ' && newLine.charAt(i) != ' ' && newLine.charAt(i) != 'E') {
                     //Doesn't add one for negative sign
-                    if(!(newLine.charAt(i) == '-' && !(newLine.charAt(i+1) == ' '))) {
+                    if (!(newLine.charAt(i) == '-' && !(newLine.charAt(i + 1) == ' '))) {
                         nonNumCount++;
                     }
                 }
@@ -351,9 +356,9 @@ public class MainActivity extends AppCompatActivity {
             if (newLine.charAt(0) == ' ') newLine.deleteCharAt(0);
         }
 
-        if(newLine.toString().contains("E") &&
+        if (newLine.toString().contains("E") &&
                 newLine.toString().charAt(newLine.indexOf("E") + 1) != '-' &&
-                Integer.parseInt(newLine.toString().substring(newLine.indexOf("E") + 1, newLine.length())) <= 15){
+                Integer.parseInt(newLine.toString().substring(newLine.indexOf("E") + 1, newLine.length())) <= 15) {
             return String.format("%.0f", Double.parseDouble(newLine.toString().replace(' ', '\0')));
         }
         return newLine.toString().replace(' ', '\0');
@@ -379,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
                 }
-                if(iterator.hasNext()) iterator.next();
+                if (iterator.hasNext()) iterator.next();
             }
 
             //Multiplication & Division
@@ -394,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
-                //For when numbers are left next to each other e.g. (2)(2) = 2 x 2 = 4
+                    //For when numbers are left next to each other e.g. (2)(2) = 2 x 2 = 4
                 } else if (iterator.hasNext() && iterator.hasPrevious() && isNumeric(arrayList.get(iterator.previousIndex())) && isNumeric(arrayList.get(iterator.nextIndex()))) {
                     tempNum = Double.parseDouble(arrayList.get(iterator.previousIndex())) * Double.parseDouble(arrayList.get(iterator.nextIndex()));
                     iterator.previous();
@@ -403,8 +408,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
-                }
-                else if (arrayList.get(iterator.nextIndex()).equals("/")) {
+                } else if (arrayList.get(iterator.nextIndex()).equals("/")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) / Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -414,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
                 }
-                if(iterator.hasNext()) iterator.next();
+                if (iterator.hasNext()) iterator.next();
             }
 
             //Addition & Subtraction
@@ -429,8 +433,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
-                }
-                else if (arrayList.get(iterator.nextIndex()).equals("-")) {
+                } else if (arrayList.get(iterator.nextIndex()).equals("-")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) - Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
@@ -440,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
                 }
-                if(iterator.hasNext()) iterator.next();
+                if (iterator.hasNext()) iterator.next();
             }
         }
 
@@ -448,8 +451,8 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(arrayList.get(0));
 
         //Circumvent issue of double precision loss by shortening decimal output
-        if(arrayList.get(0).contains(".")){
-            if(arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13){
+        if (arrayList.get(0).contains(".")) {
+            if (arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13) {
                 DecimalFormat decimalFormat = new DecimalFormat("#.#############");
                 decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
                 return Double.parseDouble(decimalFormat.format(Double.parseDouble(arrayList.get(0))));
