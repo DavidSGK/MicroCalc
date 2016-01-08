@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
@@ -35,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
 
         output = (TextView) findViewById(R.id.output);
         output.setMovementMethod(new ScrollingMovementMethod());
@@ -223,12 +230,6 @@ public class MainActivity extends AppCompatActivity {
             splitArray = line.split("\\s+");
         }
 
-        System.out.println(line);
-        for (String piece : splitArray) {
-            System.out.print(piece);
-        }
-        System.out.print("\n");
-
         //Check for syntax errors
         int count1 = 0;
         int count2 = 0;
@@ -240,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
             if (piece.equals(")")) count2++;
         }
         if (count1 != count2) {
-            System.out.println(1);
             return "Syntax Error";
         } else {
             bracketCount = count1;
@@ -250,21 +250,17 @@ public class MainActivity extends AppCompatActivity {
         //Note: All non-number characters other than the decimal point adds spaces to either side
         if (!isNumeric(splitArray[0])) {
             if (!splitArray[0].equals("(")) {
-                System.out.println(-1);
-                System.out.println(splitArray[0]);
                 return "Syntax Error";
             }
         }
         if (!isNumeric(splitArray[splitArray.length - 1])) {
             if (!splitArray[splitArray.length - 1].equals(")")) {
-                System.out.println(-2);
                 return "Syntax Error";
             }
         }
 
         //Can't have the first ) before ( and can't have the last ( after )
         if (Arrays.asList(splitArray).indexOf(")") < Arrays.asList(splitArray).indexOf("(") || Arrays.asList(splitArray).lastIndexOf("(") > Arrays.asList(splitArray).lastIndexOf(")")) {
-            System.out.println(4);
             return "Syntax Error";
         }
 
@@ -277,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
                     if (!(splitArray[i].equals("(") && splitArray[i - 1].equals(")")) &&
                             !(splitArray[i].equals("(") && splitArray[i - 1].equals("(")) &&
                             !(splitArray[i].equals(")") && splitArray[i - 1].equals(")"))) {
-                        System.out.println(3);
                         return "Syntax Error";
                     }
                 }
@@ -287,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
         //Remove unnecessary leading 0's from input
         for (int i = 0; i < splitArray.length; i++) {
             if (splitArray[i].length() > 1 && splitArray[i].charAt(0) == '0' && !(splitArray[i].charAt(1) == '.')) {
-                System.out.println("leading 0's detected");
                 StringBuilder tempString = new StringBuilder(splitArray[i]);
                 if (splitArray[i].contains(".")) {
                     if (splitArray[i].charAt(splitArray[i].indexOf('.') - 1) == '0') {
@@ -304,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
                         tempString.deleteCharAt(0);
                     }
                 }
-                System.out.println("tempString: " + tempString);
                 splitArray[i] = tempString.toString();
             }
         }
@@ -326,7 +319,6 @@ public class MainActivity extends AppCompatActivity {
         double tempResult;
 
         while (true) {
-            System.out.println("newLine: " + newLine);
             //Checks how many operators need to be resolved
             nonNumCount = 0;
             for (int i = 0; i < newLine.length(); i++) {
@@ -351,7 +343,6 @@ public class MainActivity extends AppCompatActivity {
             if (nonNumCount == 0 && condition == false) break;
 
             if (bracketCount != 0) { //if brackets exist
-                System.out.println("nonNumCount: " + nonNumCount);
 
                 startBracketIndex = newLine.lastIndexOf("(", newLine.indexOf(")"));
                 endBracketIndex = newLine.indexOf(")");
@@ -370,15 +361,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 bracketCount--;
             } else {                //if brackets don't exist
-                System.out.println("nonNumCount: " + nonNumCount);
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 //Division by 0
                 if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
-                    System.out.println("Division by 0");
                     return "Can't divide by 0";
                 }
                 tempResult = Calculate(checkList);
-                System.out.println("tempResult: " + tempResult);
                 newLine.delete(0, newLine.length());
                 if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
                     newLine.insert(0, (int) tempResult);
@@ -483,9 +471,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        System.out.println("Size: " + arrayList.size());
-        System.out.println(arrayList.get(0));
-
         //Circumvent issue of double precision loss by shortening decimal output
         if (arrayList.get(0).contains(".")) {
             if (arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13) {
@@ -495,7 +480,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        System.out.println(Double.parseDouble(arrayList.get(0)));
         return Double.parseDouble(arrayList.get(0));
     }
 
