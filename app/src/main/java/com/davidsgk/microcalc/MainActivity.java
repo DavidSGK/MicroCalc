@@ -24,16 +24,6 @@ import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
-    //different classifications of buttons
-    private static Button[] numButtons = new Button[10];        //0,1,2,3,4,5,6,7,8,9
-    private static Button[] operatorButtons = new Button[7];    //+,-,*,/,(,),^
-    private static Button decimalButton;                        //.
-    private static Button negativeButton;                       //(-)
-    private static Button returnButton;                         //=
-    private static Button deleteButton;                         //backspace/clear for long press
-    private static TextView output;                             //outputs all input and answer
-    private static Spannable span;                              //used for styling portions of output
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +37,19 @@ public class MainActivity extends AppCompatActivity {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
         }
 
+        //different classifications of buttons
+        Button[] numButtons = new Button[10];        //0,1,2,3,4,5,6,7,8,9
+        Button[] operatorButtons = new Button[7];    //+,-,*,/,(,),^
+        Button decimalButton;                        //.
+        Button negativeButton;                       //(-)
+        Button returnButton;                         //=
+        final Button deleteButton;                   //backspace/clear for long press
+        final TextView output;                       //outputs all input and answer
+
         output = (TextView) findViewById(R.id.output);
         output.setMovementMethod(new ScrollingMovementMethod());
         output.setVerticalScrollBarEnabled(false);
 
-        initButtons();
-    }
-
-    //initialize buttons and their functions
-    protected void initButtons() {
         int id;
         for (int i = 0; i < 10; i++) {
             id = getResources().getIdentifier("button_" + i, "id", getPackageName());
@@ -75,17 +69,19 @@ public class MainActivity extends AppCompatActivity {
         returnButton = (Button) findViewById(R.id.button_return);
         deleteButton = (Button) findViewById(R.id.button_del);
 
+        //Number buttons
         for (int j = 0; j < 10; j++) {
             numButtons[j].setOnClickListener(
                     new Button.OnClickListener() {
                         public void onClick(View v) {
                             output.append(((Button) v).getText().toString());
-                            ScrollToBottom();
+                            ScrollToBottom(output);
                         }
                     }
             );
         }
 
+        //Operator buttons
         for (int k = 0; k < 7; k++) {
             operatorButtons[k].setOnClickListener(
                     new Button.OnClickListener() {
@@ -99,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                                 output.append(text.substring(text.lastIndexOf('\n', text.length() - 2) + 1,
                                         text.lastIndexOf('\n')));
                             }
-                            //detects if another operator was pressed right before
+                            //detects if another operator was pressed right before to not add another space
                             if (text.length() != 0 && text.charAt(text.length() - 1) == ' ') {
                                 output.append(((Button) v).getText().toString() + " ");
                             } else {
@@ -110,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
+        //Decimal button
         decimalButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
@@ -118,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        //Negative sign button
         negativeButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
@@ -126,12 +124,13 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        //Equal sign button
         returnButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         output.append("=\n");
                         //taking the span of the previous lines and styling size and color for better readability
-                        span = new SpannableString(output.getText());
+                        Spannable span = new SpannableString(output.getText());
                         span.setSpan(new RelativeSizeSpan(0.5f),
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
                                 output.getText().toString().lastIndexOf('\n'),
@@ -141,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
                                 output.getText().toString().lastIndexOf('\n'),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         output.setText(span);
-                        output.append(Interpreter(CurrentLine()) + "\n");
-                        ScrollToBottom();
+                        output.append(Interpreter(CurrentLine(output)) + "\n");
+                        ScrollToBottom(output);
                     }
                 }
         );
 
+        //Delete button
         deleteButton.setOnClickListener(
                 new Button.OnClickListener() {
                     public void onClick(View v) {
@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        //Delete button long-press clear behavior
         deleteButton.setOnLongClickListener(
                 new Button.OnLongClickListener() {
                     public boolean onLongClick(View v) {
@@ -173,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        //Changes the text on the delete button depending on the state of the text
         output.addTextChangedListener(
                 new TextWatcher() {
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -196,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //method to make the output automatically scroll to the bottom
-    protected static void ScrollToBottom() {
+    protected static void ScrollToBottom(TextView output) {
         final Layout layout = output.getLayout();
         if (layout != null) {
             int scrollDelta = layout.getLineBottom(output.getLineCount() - 1) - output.getScrollY() - output.getHeight();
@@ -205,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //method to reference just last line in TextView
-    protected static String CurrentLine() {
+    protected static String CurrentLine(TextView output) {
         String text = output.getText().toString();
         String currentLine;
         int lineCount = 0;
