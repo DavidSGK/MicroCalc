@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
                                 output.getText().toString().lastIndexOf('\n'),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        span.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorOperatorHighLight)),
+                        span.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mds_orange_500)),
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
                                 output.getText().toString().lastIndexOf('\n'),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     //method to perform the calculations based on input
     protected String Interpreter(String line) {
 
-        if (line.equals(" ")) return "No Input";
+        if (line.equals(" ") || line.length() == 0) return "No Input";
 
         String[] splitArray;
         if (line.charAt(0) == ' ') {
@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                     iterator.remove();
                     iterator.add(Double.toString(tempNum));
                     iterator = arrayList.listIterator();    //reset
-                } else if (arrayList.get(iterator.nextIndex()).equals("/")) {
+                } else if (arrayList.get(iterator.nextIndex()).equals("÷")) {
                     tempNum = Double.parseDouble(iterator.previous().toString()) / Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
                     iterator.remove();
                     iterator.next();
