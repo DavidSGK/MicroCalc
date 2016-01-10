@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
             if (piece.equals(")")) count2++;
         }
         if (count1 != count2) {
-            return "Syntax Error";
+            return getResources().getString(R.string.syntax_error);
         } else {
             bracketCount = count1;
         }
@@ -256,18 +256,18 @@ public class MainActivity extends AppCompatActivity {
         //Note: All non-number characters other than the decimal point adds spaces to either side
         if (!isNumeric(splitArray[0])) {
             if (!splitArray[0].equals("(")) {
-                return "Syntax Error";
+                return getResources().getString(R.string.syntax_error);
             }
         }
         if (!isNumeric(splitArray[splitArray.length - 1])) {
             if (!splitArray[splitArray.length - 1].equals(")")) {
-                return "Syntax Error";
+                return getResources().getString(R.string.syntax_error);
             }
         }
 
         //Can't have the first ) before ( and can't have the last ( after )
         if (Arrays.asList(splitArray).indexOf(")") < Arrays.asList(splitArray).indexOf("(") || Arrays.asList(splitArray).lastIndexOf("(") > Arrays.asList(splitArray).lastIndexOf(")")) {
-            return "Syntax Error";
+            return getResources().getString(R.string.syntax_error);
         }
 
         //Can't have two numbers or non-numbers side by side
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!(splitArray[i].equals("(") && splitArray[i - 1].equals(")")) &&
                             !(splitArray[i].equals("(") && splitArray[i - 1].equals("(")) &&
                             !(splitArray[i].equals(")") && splitArray[i - 1].equals(")"))) {
-                        return "Syntax Error";
+                        return Integer.toString(R.string.syntax_error);
                     }
                 }
             }
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
                 //Division by 0
                 if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
-                    return "Can't divide by 0";
+                    return getResources().getString(R.string.division_by_0);
                 }
                 tempResult = Calculate(checkList);
                 newLine.delete(startBracketIndex, endBracketIndex + 1);
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 //Division by 0
                 if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
-                    return "Can't divide by 0";
+                    return getResources().getString(R.string.division_by_0);
                 }
                 tempResult = Calculate(checkList);
                 newLine.delete(0, newLine.length());

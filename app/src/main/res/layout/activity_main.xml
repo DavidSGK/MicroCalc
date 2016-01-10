@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.davidsgk.minicalc.MainActivity"
+    tools:context="com.davidsgk.microcalc.MainActivity"
     android:weightSum="13"
     android:background="#222222"
     android:orientation="vertical">
@@ -20,7 +20,7 @@
         android:gravity="bottom|end"
         android:maxLines="6"
         android:scrollbars="vertical"
-        android:textSize="35dp"
+        android:textSize="40dp"
         android:background="@drawable/ripple_textview"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
@@ -56,7 +56,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="7"
+                    android:text="@string/number_7"
                     android:id="@+id/button_7"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -67,7 +67,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="8"
+                    android:text="@string/number_8"
                     android:id="@+id/button_8"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -78,7 +78,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="9"
+                    android:text="@string/number_9"
                     android:id="@+id/button_9"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -98,7 +98,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="4"
+                    android:text="@string/number_4"
                     android:id="@+id/button_4"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -109,7 +109,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="5"
+                    android:text="@string/number_5"
                     android:id="@+id/button_5"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -120,7 +120,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="6"
+                    android:text="@string/number_6"
                     android:id="@+id/button_6"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -140,7 +140,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="1"
+                    android:text="@string/number_1"
                     android:id="@+id/button_1"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -151,7 +151,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="2"
+                    android:text="@string/number_2"
                     android:id="@+id/button_2"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -162,7 +162,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="3"
+                    android:text="@string/number_3"
                     android:id="@+id/button_3"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -182,7 +182,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="."
+                    android:text="@string/special_decimal"
                     android:id="@+id/button_decimal"
                     android:layout_weight="0.333333333333333333"
                     android:background="@drawable/ripple_special"
@@ -193,7 +193,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="0"
+                    android:text="@string/number_0"
                     android:id="@+id/button_0"
                     android:layout_weight="0.333333333333333333"
                     android:textColor="#555555"
@@ -204,7 +204,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
-                    android:text="(-)"
+                    android:text="@string/special_negative"
                     android:id="@+id/button_negative"
                     android:layout_weight="0.333333333333333333"
                     android:background="@drawable/ripple_special"
@@ -231,7 +231,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="+"
+                    android:text="@string/operator_add"
                     android:id="@+id/button_add"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -242,7 +242,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="DEL"
+                    android:text="@string/del"
                     android:id="@+id/button_del"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_del"
@@ -260,7 +260,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="x"
+                    android:text="@string/operator_multiply"
                     android:id="@+id/button_multiply"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -272,7 +272,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="("
+                    android:text="@string/operator_bracket_L"
                     android:id="@+id/button_bracketL"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -290,7 +290,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="-"
+                    android:text="@string/operator_subtract"
                     android:id="@+id/button_subtract"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -301,7 +301,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text=")"
+                    android:text="@string/operator_bracket_R"
                     android:id="@+id/button_bracketR"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -319,7 +319,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="÷"
+                    android:text="@string/operator_divide"
                     android:id="@+id/button_divide"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -330,7 +330,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="^"
+                    android:text="@string/operator_exponent"
                     android:id="@+id/button_exponent"
                     android:layout_weight="0.5"
                     android:background="@drawable/ripple_operator"
@@ -348,7 +348,7 @@
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="="
+                    android:text="@string/equal"
                     android:id="@+id/button_return"
                     android:layout_weight="0.333333333333333333"
                     android:background="@drawable/ripple_equal"
