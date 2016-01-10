@@ -16,8 +16,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ListIterator;
@@ -322,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
         boolean condition;
         int startBracketIndex;
         int endBracketIndex;
-        double tempResult;
+        BigDecimal tempResult;
 
         while (true) {
             //Checks how many operators need to be resolved
@@ -360,11 +362,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempResult = Calculate(checkList);
                 newLine.delete(startBracketIndex, endBracketIndex + 1);
-                if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
-                    newLine.insert(startBracketIndex, (int) tempResult);
-                } else {
-                    newLine.insert(startBracketIndex, tempResult);
-                }
+                newLine.insert(startBracketIndex, tempResult);
                 bracketCount--;
             } else {                //if brackets don't exist
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
@@ -374,11 +372,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 tempResult = Calculate(checkList);
                 newLine.delete(0, newLine.length());
-                if (tempResult == Math.rint(tempResult) && !Double.toString(tempResult).contains("E")) {
-                    newLine.insert(0, (int) tempResult);
-                } else {
-                    newLine.insert(0, tempResult);
-                }
+                newLine.insert(0, tempResult);
             }
 
             //clean up leading and trailing spaces left over
@@ -394,8 +388,8 @@ public class MainActivity extends AppCompatActivity {
         return newLine.toString().replace(' ', '\0');
     }
 
-    protected double Calculate(ArrayList<String> arrayList) {
-        double tempNum;
+    protected BigDecimal Calculate(ArrayList<String> arrayList) {
+        BigDecimal tempNum;
 
         if (arrayList.size() != 1) {
 
@@ -405,13 +399,22 @@ public class MainActivity extends AppCompatActivity {
             iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
                 if (arrayList.get(iterator.nextIndex()).equals("^")) {
-                    tempNum = Math.pow(Double.parseDouble(iterator.previous().toString()), Double.parseDouble(arrayList.get(iterator.nextIndex() + 2)));
+                    //Decimal power: X^(A+B) = X^A * X^B
+                    if (arrayList.get(iterator.nextIndex() + 1).contains(".")) {
+                        int integerPowerFragment = Integer.parseInt(arrayList.get(iterator.nextIndex() + 1).substring(0, arrayList.get(iterator.nextIndex() + 1).indexOf('.')));
+                        double doublePowerFragment = Double.parseDouble("0" + arrayList.get(iterator.nextIndex() + 1).substring(arrayList.get(iterator.nextIndex() + 1).indexOf('.'), arrayList.get(iterator.nextIndex() + 1).length()));
+                        BigDecimal tempNum2 = new BigDecimal(iterator.previous().toString());
+                        tempNum = tempNum2.pow(integerPowerFragment).multiply(new BigDecimal(Math.pow(tempNum2.doubleValue(), doublePowerFragment)));
+                        //Integer power
+                    } else {
+                        tempNum = new BigDecimal(iterator.previous().toString()).pow(Integer.parseInt(arrayList.get(iterator.nextIndex() + 2)));
+                    }
                     iterator.remove();
                     iterator.next();    //unless next() is called, ListIterator cannot remove another element
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                 }
                 if (iterator.hasNext()) iterator.next();
@@ -421,31 +424,31 @@ public class MainActivity extends AppCompatActivity {
             iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
                 if (arrayList.get(iterator.nextIndex()).equals("x")) {
-                    tempNum = Double.parseDouble(iterator.previous().toString()) * Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
+                    tempNum = new BigDecimal(iterator.previous().toString()).multiply(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                     //For when numbers are left next to each other e.g. (2)(2) = 2 x 2 = 4
                 } else if (iterator.hasNext() && iterator.hasPrevious() && isNumeric(arrayList.get(iterator.previousIndex())) && isNumeric(arrayList.get(iterator.nextIndex()))) {
-                    tempNum = Double.parseDouble(arrayList.get(iterator.previousIndex())) * Double.parseDouble(arrayList.get(iterator.nextIndex()));
+                    tempNum = new BigDecimal(iterator.previous().toString()).multiply(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.previous();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                 } else if (arrayList.get(iterator.nextIndex()).equals("÷")) {
-                    tempNum = Double.parseDouble(iterator.previous().toString()) / Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
+                    tempNum = new BigDecimal(iterator.previous().toString()).divide(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)), new MathContext(30, RoundingMode.HALF_UP));
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                 }
                 if (iterator.hasNext()) iterator.next();
@@ -455,38 +458,29 @@ public class MainActivity extends AppCompatActivity {
             iterator = arrayList.listIterator();
             while (iterator.hasNext()) {
                 if (arrayList.get(iterator.nextIndex()).equals("+")) {
-                    tempNum = Double.parseDouble(iterator.previous().toString()) + Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
+                    tempNum = new BigDecimal(iterator.previous().toString()).add(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                 } else if (arrayList.get(iterator.nextIndex()).equals("-")) {
-                    tempNum = Double.parseDouble(iterator.previous().toString()) - Double.parseDouble(arrayList.get(iterator.nextIndex() + 2));
+                    tempNum = new BigDecimal(iterator.previous().toString()).subtract(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
                     iterator.next();
                     iterator.remove();
-                    iterator.add(Double.toString(tempNum));
+                    iterator.add(tempNum.toString());
                     iterator = arrayList.listIterator();    //reset
                 }
                 if (iterator.hasNext()) iterator.next();
             }
         }
 
-        //Circumvent issue of double precision loss by shortening decimal output
-        if (arrayList.get(0).contains(".")) {
-            if (arrayList.get(0).substring(arrayList.get(0).indexOf('.'), arrayList.get(0).length()).length() > 13) {
-                DecimalFormat decimalFormat = new DecimalFormat("#.#############");
-                decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-                return Double.parseDouble(decimalFormat.format(Double.parseDouble(arrayList.get(0))));
-            }
-        }
-
-        return Double.parseDouble(arrayList.get(0));
+        return new BigDecimal(arrayList.get(0));
     }
 
     public boolean isNumeric(String text) {
@@ -510,5 +504,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean isOperator(char text) {
         if (text == '+' || text == 'x' || text == '-' || text == '/' || text == '^') return true;
         else return false;
+    }
+
+    public boolean isInteger(BigDecimal num) {
+        if (num.scale() <= 0) {
+            return true;
+        } else if (num.stripTrailingZeros().scale() <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
