@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorNumberHighLight"></selector>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorNumberHighLight">
+    <item android:drawable="@color/textviewBG" />
+</selector>

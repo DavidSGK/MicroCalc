@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/mds_orange_A200">
+    android:color="@color/colorSpecialHighLight">
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/colorSpecialHighLight" />
         </shape>
     </item>
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@color/specialBG" />
 </ripple>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/mds_red_A200">
-    <item android:drawable="@color/mds_red_900" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/colorDelHighLight">
+    <item android:drawable="@color/delBG" />
 </selector>

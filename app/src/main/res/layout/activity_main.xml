@@ -8,14 +8,15 @@
     tools:context="com.davidsgk.microcalc.MainActivity"
     android:weightSum="13"
     android:background="#222222"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipToPadding="false">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/output"
-        android:layout_weight="4.75"
+        android:layout_weight="5"
         android:textColor="#FFFFFF"
         android:gravity="bottom|end"
         android:maxLines="6"
@@ -25,33 +26,34 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:paddingEnd="10dp"
-        android:paddingStart="10dp" />
-
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="0.25" />
+        android:paddingStart="10dp"
+        android:paddingBottom="10dp"
+        android:elevation="5dp"
+        android:translationZ="5dp" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.6"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:weightSum="1"
-                android:layout_weight="0.25">
+                android:layout_weight="0.25"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -93,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:weightSum="1"
-                android:layout_weight="0.25">
+                android:layout_weight="0.25"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -135,7 +138,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:weightSum="1"
-                android:layout_weight="0.25">
+                android:layout_weight="0.25"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -177,7 +181,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:weightSum="1"
-                android:layout_weight="0.25">
+                android:layout_weight="0.25"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -220,13 +225,15 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -255,7 +262,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -285,7 +293,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -314,7 +323,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"
@@ -343,7 +353,8 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2">
+                android:layout_weight="0.2"
+                android:clipToPadding="false">
 
                 <Button
                     android:layout_width="0dp"

@@ -3,10 +3,15 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#222222</color>
     <color name="colorAccent">#ff6f00</color>
-    <color name="colorNumberHighLight">#555555</color>
-    <color name="colorOperatorHighLight">#00ab7b</color>
-    <color name="colorSpecialHighLight">#26a69a</color>
-    <color name="colorDelHighLight">#b71c1c</color>
-    <color name="colorEqualHighLight">#00695c</color>
-    <color name="colorRippleAccent">#444444</color>
+    <color name="numberBG">#FFFFFF</color>
+    <color name="colorNumberHighLight">@color/mds_grey_400</color>
+    <color name="operatorBG">@color/mds_grey_400</color>
+    <color name="colorOperatorHighLight">@color/mds_grey_500</color>
+    <color name="specialBG">#FFFFFF</color>
+    <color name="colorSpecialHighLight">@color/mds_grey_400</color>
+    <color name="delBG">@color/mds_grey_400</color>
+    <color name="colorDelHighLight">@color/mds_grey_500</color>
+    <color name="equalBG">@color/mds_grey_500</color>
+    <color name="colorEqualHighLight">@color/mds_grey_600</color>
+    <color name="textviewBG">#222222</color>
 </resources>

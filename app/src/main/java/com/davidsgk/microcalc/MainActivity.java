@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.Window;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         output.append("=\n");
                         //taking the span of the previous lines and styling size and color for better readability
                         Spannable span = new SpannableString(output.getText());
-                        span.setSpan(new RelativeSizeSpan(0.5f),
+                        span.setSpan(new AbsoluteSizeSpan(20, true),
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
                                 output.getText().toString().lastIndexOf('\n'),
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -357,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.substring(startBracketIndex + 2, endBracketIndex).split("\\s+")));
                 //Division by 0
-                if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
+                if (checkList.contains("÷") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
                     return getResources().getString(R.string.division_by_0);
                 }
                 tempResult = Calculate(checkList);
@@ -367,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
             } else {                //if brackets don't exist
                 ArrayList<String> checkList = new ArrayList<>(Arrays.asList(newLine.toString().split("\\s+")));
                 //Division by 0
-                if (checkList.contains("/") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
+                if (checkList.contains("÷") && checkList.contains("0") && checkList.indexOf("0") == checkList.indexOf("/") + 1) {
                     return getResources().getString(R.string.division_by_0);
                 }
                 tempResult = Calculate(checkList);

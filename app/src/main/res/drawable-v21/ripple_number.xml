@@ -6,5 +6,5 @@
             <solid android:color="@android:color/white" />
         </shape>
     </item>
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@color/numberBG" />
 </ripple>
