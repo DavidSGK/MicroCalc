@@ -9,7 +9,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
-import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.Window;
@@ -19,8 +18,11 @@ import android.widget.TextView;
 import android.view.View;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ListIterator;
@@ -133,16 +135,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         output.append("=\n");
                         //taking the span of the previous lines and styling size and color for better readability
-                        Spannable span = new SpannableString(output.getText());
-                        span.setSpan(new AbsoluteSizeSpan(20, true),
+                        SpannableString span = new SpannableString(output.getText());
+                        span.setSpan(new RelativeSizeSpan(0.5f),
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
-                                output.getText().toString().lastIndexOf('\n'),
+                                output.getText().toString().lastIndexOf('\n') + 1,
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         span.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.mds_orange_500)),
                                 output.getText().toString().lastIndexOf('\n', output.getText().toString().length() - 2) + 1,
-                                output.getText().toString().lastIndexOf('\n'),
+                                output.getText().toString().lastIndexOf('\n') + 1,
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        output.setLineSpacing(2, 2);
                         output.setText(span);
+                        output.setLineSpacing(1, 1);
                         output.append(Interpreter(CurrentLine(output)) + "\n");
                         ScrollToBottom(output);
                     }
@@ -381,16 +385,17 @@ public class MainActivity extends AppCompatActivity {
             if (newLine.charAt(0) == ' ') newLine.deleteCharAt(0);
         }
 
-        if (newLine.toString().contains("E") &&
-                newLine.toString().charAt(newLine.indexOf("E") + 1) != '-' &&
-                Integer.parseInt(newLine.toString().substring(newLine.indexOf("E") + 1, newLine.length())) <= 15) {
-            return String.format("%.0f", Double.parseDouble(newLine.toString().replace(' ', '\0')));
+        //format output with scientific notation
+        if (newLine.length() > 13) {
+            DecimalFormat decimalFormat = new DecimalFormat("0.#############E0");
+            return decimalFormat.format(new BigDecimal(newLine.toString().replace(' ', '\0')));
+        } else {
+            return newLine.toString().replace(' ', '\0');
         }
-        return newLine.toString().replace(' ', '\0');
     }
 
     protected BigDecimal Calculate(ArrayList<String> arrayList) {
-        BigDecimal tempNum;
+        BigDecimal tempNum = new BigDecimal(BigInteger.ZERO);
 
         if (arrayList.size() != 1) {
 
@@ -481,7 +486,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        return new BigDecimal(arrayList.get(0));
+        /*DecimalFormat decimalFormat = new DecimalFormat();
+        decimalFormat.setMaximumFractionDigits(13);
+        decimalFormat.setMaximumIntegerDigits(13);
+        decimalFormat.setGroupingUsed(false);*/
+
+        return tempNum;
     }
 
     public boolean isNumeric(String text) {
