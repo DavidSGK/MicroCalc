@@ -391,7 +391,14 @@ public class MainActivity extends AppCompatActivity {
             if (isInteger(new BigDecimal(newLine.toString()))) {
                 decimalFormat = new DecimalFormat("0.#############E0");
             } else {
-                decimalFormat = new DecimalFormat("#.###############");
+                System.out.println(newLine);
+                System.out.println(newLine.toString());
+                System.out.println(newLine.substring(0, 7));
+                if (newLine.substring(0, 7).equals("0.00000") || (newLine.toString().contains("E") && Integer.parseInt(newLine.substring(newLine.indexOf("E") + 1, newLine.length())) <= -6)) {
+                    decimalFormat = new DecimalFormat("0.#############E0");
+                } else {
+                    decimalFormat = new DecimalFormat("#.###############");
+                }
             }
             return decimalFormat.format(new BigDecimal(newLine.toString().replace(' ', '\0')));
         } else {
