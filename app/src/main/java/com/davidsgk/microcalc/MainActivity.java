@@ -387,7 +387,12 @@ public class MainActivity extends AppCompatActivity {
 
         //format output with scientific notation
         if (newLine.length() > 13) {
-            DecimalFormat decimalFormat = new DecimalFormat("0.#############E0");
+            DecimalFormat decimalFormat;
+            if (isInteger(new BigDecimal(newLine.toString()))) {
+                decimalFormat = new DecimalFormat("0.#############E0");
+            } else {
+                decimalFormat = new DecimalFormat("#.###############");
+            }
             return decimalFormat.format(new BigDecimal(newLine.toString().replace(' ', '\0')));
         } else {
             return newLine.toString().replace(' ', '\0');
