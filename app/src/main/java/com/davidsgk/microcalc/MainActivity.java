@@ -429,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
             //Multiplication & Division
             iterator = arrayList.listIterator();    //reset
             while (iterator.hasNext()) {
-                if (arrayList.get(iterator.nextIndex()).equals("x")) {
+                if (arrayList.get(iterator.nextIndex()).equals("×")) {
                     tempNum = new BigDecimal(iterator.previous().toString()).multiply(new BigDecimal(arrayList.get(iterator.nextIndex() + 2)));
                     iterator.remove();
                     iterator.next();

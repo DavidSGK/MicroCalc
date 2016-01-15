@@ -14,7 +14,7 @@
     <string name="special_decimal">.</string>
     <string name="special_negative">(-)</string>
     <string name="operator_add">+</string>
-    <string name="operator_multiply">x</string>
+    <string name="operator_multiply">×</string>
     <string name="operator_subtract">-</string>
     <string name="operator_divide">÷</string>
     <string name="operator_bracket_L">(</string>
